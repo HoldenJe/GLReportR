@@ -7,7 +7,7 @@
 #' @export
 #' @examples
 #'
-#' boat_coords <- data.frame(lat = 44.58398, lon = -80.90693)
+#' boat_coords <- data.frame(lat = 44.58509, lon = -80.93900)
 #' boat_coords$dd_lat <- dd_to_ddm(boat_coords$lat)
 #' boat_coords$dd_lon <- dd_to_ddm(boat_coords$lon)
 #'
