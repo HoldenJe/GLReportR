@@ -23,11 +23,10 @@ library(dplyr)
 fn011 <- get_FN011(list(prj_cd = params$prj_cd))
 fn121 <- get_FN121(list(prj_cd = params$prj_cd))
 fn123 <- get_FN123(list(prj_cd = params$prj_cd))
-fn123 <- fn123 |> rename(SPC = spc)
 fn123 <- append.spc.names(fn123)
 
-prj_ldr <- paste(fn011$prj_ldr.first_name, 
-                 fn011$prj_ldr.last_name, sep =" ")
+prj_ldr <- paste(fn011$PRJ_LDR.FIRST_NAME, 
+                 fn011$PRJ_LDR.LAST_NAME, sep =" ")
 
 baseurl <- "http://10.167.37.157/project_tracker/api/project_abstracts/?format=json&prj_cd="
 prj_url <- paste0(baseurl, tolower(params$prj_cd))
@@ -45,7 +44,7 @@ prj_abstract <- content$results[[1]]$abstract
 ## Project Map
 ```{r prjmap, message=FALSE}
 library(leaflet)
-leaflet(fn121) |> addTiles() |> addCircles(lat = ~dd_lat, lng = ~dd_lon)
+leaflet(fn121) |> addTiles() |> addCircles(lat = ~DD_LAT, lng = ~DD_LON)
 ```
 
 ## Species Catches
@@ -55,8 +54,8 @@ library(kableExtra)
 
 catch_sum <- fn123  |> 
   group_by(SPC_LAB) |> 
-  summarize(catcnt = sum(catcnt, na.rm = T)) |> 
-  arrange(desc(catcnt))
+  summarize(CATCNT = sum(CATCNT, na.rm = T)) |> 
+  arrange(desc(CATCNT))
 
 catch_sum[1:10,] |> 
   knitr::kable(caption = "Top 10 species captured",) |> 
