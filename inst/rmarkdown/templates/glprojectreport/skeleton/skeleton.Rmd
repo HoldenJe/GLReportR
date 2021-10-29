@@ -24,6 +24,7 @@ fn011 <- get_FN011(list(prj_cd = params$prj_cd))
 fn121 <- get_FN121(list(prj_cd = params$prj_cd))
 fn123 <- get_FN123(list(prj_cd = params$prj_cd))
 fn123 <- append.spc.names(fn123)
+fn125 <- get_FN125(list(prj_cd = params$prj_cd))
 
 prj_ldr <- paste(fn011$PRJ_LDR.FIRST_NAME, 
                  fn011$PRJ_LDR.LAST_NAME, sep =" ")
@@ -44,7 +45,8 @@ prj_abstract <- content$results[[1]]$abstract
 ## Project Map
 ```{r prjmap, message=FALSE}
 library(leaflet)
-leaflet(fn121) |> addTiles() |> addCircles(lat = ~DD_LAT, lng = ~DD_LON)
+fn121 <- fn121 |> mutate(maplabel = paste("SAM:", SAM, sep = " "))
+leaflet(fn121) |> addTiles() |> addCircles(lat = ~DD_LAT, lng = ~DD_LON, popup = ~maplabel)
 ```
 
 ## Species Catches
