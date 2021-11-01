@@ -14,7 +14,11 @@ You can install the released version of GLReportR from github.com with:
 devtools::install_github("HoldenJe/GLReportR")
 ```
 
-Or request binary from the project team (Jeremy Holden, Sarah Beech, Rachel Henderson). 
+To do this you will need to have the package devtools installed (use: install.packages("devtools")). You will need to install Rtools which is available for download here: Using Rtools4 on Windows (r-project.org) and select the link under "To use rtools, download the installer from CRAN:". Note: check you are using a recent version of RStudio (at least 1.2.5042) to work with rtools4. If you are having issues with the install_github() function it may help to update your R to a newer version. 
+
+Alternatively, you can request binary from the project team (Jeremy Holden, Sarah Beech, Rachel Henderson). 
+
+For this package to work you will also need to install the glfishr package using devtools::install_github("AdamCottrill/glfishr")
 
 ## Example
 
