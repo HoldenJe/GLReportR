@@ -1,0 +1,27 @@
+Binding: proj_setup
+Title: GLMU Project
+OpenFiles: Instructions.md
+
+Parameter: PRJ_LDR
+Widget: TextInput
+Label: Project Leader
+Default:
+Position: Left
+
+Parameter: PRJ_CD
+Widget: TextInput
+Label: Project Code
+Default:
+Position: Left
+
+Parameter: GLMU
+Widget: SelectInput
+Label: Lake Unit
+Fields: UGLMU, LOMU, LEMU
+
+Parameter: GEAR
+Widget: SelectInput
+Label: Gear
+Fields: GN, TW, TN, EF, Other
+
+
