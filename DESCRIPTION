@@ -11,10 +11,16 @@ License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
 Imports: 
-    glfishr (>= 0.0.0.4)
-Remotes: 
-    github::AdamCottrill/glfishr
+    glfishr (>= 0.0.0.4),
+Remotes:  
+    github::AdamCottrill/glfishr,
+    github::HoldenJe/gfsR
 RoxygenNote: 7.1.2
 Suggests: 
     testthat (>= 3.0.0)
 Config/testthat/edition: 3
+Enhances: 
+    gfsR (>= 0.1.4.8),
+    dplyr,
+    httr,
+    jsonlite

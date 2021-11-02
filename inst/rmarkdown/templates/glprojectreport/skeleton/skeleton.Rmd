@@ -16,8 +16,8 @@ params:
 knitr::opts_chunk$set(echo = FALSE, message = FALSE)
 library(gfsR) # due to plyr namespace conflicts gfsR needs to be loaded before dplyr
 library(glfishr)
-library("httr")
-library("jsonlite")
+library(httr)
+library(jsonlite)
 library(dplyr)
 
 fn011 <- get_FN011(list(prj_cd = params$prj_cd))
