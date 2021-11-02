@@ -1,4 +1,4 @@
-# GLReportR (development version)
+# GLReportR 0.2.0
 
 # GLReportR 0.1.0
 

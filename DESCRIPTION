@@ -1,7 +1,7 @@
 Package: GLReportR
 Type: Package
 Title: Templates for GL reports using R
-Version: 0.1.0.9001
+Version: 0.2.0
 Author: J. Holden <jeremy.holden@ontario.ca>
 Maintainer: J. Holden <jeremy.holden@ontario.ca>
 Description: A suite of tools and templates that allow staff to develop
@@ -12,7 +12,7 @@ Encoding: UTF-8
 LazyData: true
 Imports: 
     glfishr (>= 0.0.0.4),
-Remotes:  
+Remotes: 
     github::AdamCottrill/glfishr,
     github::HoldenJe/gfsR
 RoxygenNote: 7.1.2
