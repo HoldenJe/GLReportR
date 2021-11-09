@@ -1,3 +1,7 @@
+# GLReportR 0.2.1
+- Added a figures folder to project template
+- minor edits to markdown template
+
 # GLReportR 0.2.0
 
 `GLReportR 0.2.0` is here with a new project template.

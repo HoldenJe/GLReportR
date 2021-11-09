@@ -1,7 +1,7 @@
 Package: GLReportR
 Type: Package
 Title: Templates for GL reports using R
-Version: 0.2.0
+Version: 0.2.1
 Author: J. Holden <jeremy.holden@ontario.ca>
 Maintainer: J. Holden <jeremy.holden@ontario.ca>
 Description: A suite of tools and templates that allow staff to develop
