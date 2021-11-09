@@ -1,4 +1,5 @@
 # GLReportR 0.3.0
+A new dashboard template has been added!
 
 # GLReportR 0.2.1
 - Added a figures folder to project template

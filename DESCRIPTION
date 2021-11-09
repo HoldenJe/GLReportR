@@ -6,7 +6,8 @@ Author: J. Holden <jeremy.holden@ontario.ca>
 Maintainer: J. Holden <jeremy.holden@ontario.ca>
 Description: A suite of tools and templates that allow staff to develop
     reports using standard templates and themes. Template files are pre-populated
-    with starter code to assist with using glfishr
+    with starter code to assist with using glfishr. The package also provides an RStudio
+    project template for project directory structure and ReadMe file.
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
