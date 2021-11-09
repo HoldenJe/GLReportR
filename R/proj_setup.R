@@ -8,6 +8,7 @@ proj_setup <- function(path, ...) {
   dir.create(paste0(path, "/Analysis"), recursive = TRUE, showWarnings = FALSE)
   dir.create(paste0(path, "/Documentation"), recursive = TRUE, showWarnings = FALSE)
   dir.create(paste0(path, "/Reports"), recursive = TRUE, showWarnings = FALSE)
+  dir.create(paste0(path, "/Figures"), recursive = TRUE, showWarnings = FALSE)
 
   # create some header text
   header <- c(
