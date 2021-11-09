@@ -1,0 +1,90 @@
+---
+title: "`r params$prj_cd` Data Dashboard"
+output: 
+  flexdashboard::flex_dashboard:
+    orientation: columns
+    vertical_layout: fill
+params:
+  prj_cd: LHA_IA21_823
+  spc1: "334"
+  spc2: "081"
+  spc3: "091"
+  
+---
+
+```{r setup}
+library(glfishr)
+library(flexdashboard)
+library(dplyr)
+
+fn121 <- get_FN121(list(prj_cd = params$prj_cd))
+fn123 <- get_FN123(list(prj_cd = params$prj_cd))
+fn125 <- get_FN125(list(prj_cd = params$prj_cd))
+```
+
+Site Info
+==========
+Column {data-width=250}
+-----------------------------------------------------------------------
+
+### Total Tows
+```{r}
+valueBox(nrow(fn121), icon = "ship")
+
+```
+
+### Total Species Count
+```{r}
+
+valueBox(length(unique(fn123$SPC)), icon = "ship")
+
+```
+
+### Project Start Date
+```{r}
+valueBox(min(fn121$EFFDT0), icon = "ship")
+```
+
+### Project End Date
+```{r}
+valueBox(max(fn121$EFFDT1), icon = "ship")
+```
+
+
+Column {data-width=600}
+-----------------------------------------------------------------------
+
+### Tow Sites
+
+```{r}
+library(leaflet)
+fn121 <- fn121 |> 
+  mutate(PopupLabelText = paste("PRJ: ", PRJ_CD, "<br>SAM: ", SAM, "<br>Date: ", EFFDT0, sep = ""))
+leaflet(fn121) %>% addTiles() %>% 
+  addCircles(data = fn121, lat=~DD_LAT, lng=~DD_LON, popup = ~PopupLabelText)
+
+```
+
+Catch Data
+=====================
+```{r}
+library(kableExtra)
+catch_dat <- fn123 |> 
+  group_by(SAM, SPC) |> 
+  summarize(CATCNT = sum(CATCNT), BIOCNT = sum(BIOCNT), 
+            CATWT = sum(CATWT), MeanSize = CATWT/CATCNT)
+
+kbl(catch_dat) %>%
+  kable_paper("striped", full_width = F) %>%
+  scroll_box(height = "500px")
+```
+
+Fish Data
+=====================
+
+```{r}
+library(plotly)
+fig <- plot_ly(data = fn125, x = ~FLEN, y = ~RWT, color = ~SPC)
+fig
+
+```
