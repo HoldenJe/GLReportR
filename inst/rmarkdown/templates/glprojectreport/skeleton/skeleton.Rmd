@@ -56,7 +56,7 @@ library(kableExtra)
 
 catch_sum <- fn123  |> 
   group_by(SPC_LAB) |> 
-  summarize(CATCNT = sum(CATCNT, na.rm = T)) |> 
+  summarize(CATCNT = sum(CATCNT, na.rm = T), BIOCNT = sum(BIOCNT)) |> 
   arrange(desc(CATCNT))
 
 catch_sum[1:10,] |> 
@@ -64,3 +64,4 @@ catch_sum[1:10,] |>
    kable_paper(bootstrap_options = "striped", full_width = F)
 
 ```
+
