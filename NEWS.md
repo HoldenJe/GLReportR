@@ -1,3 +1,5 @@
+# GLReportR 0.3.0
+
 # GLReportR 0.2.1
 - Added a figures folder to project template
 - minor edits to markdown template
