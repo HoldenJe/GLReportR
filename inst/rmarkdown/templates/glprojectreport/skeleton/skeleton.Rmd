@@ -1,9 +1,19 @@
 ---
-title: "`r params$prj_cd` Completion Report"
+title: "`r params$prj_cd`"
 date: "Compiled on: `r format(Sys.time(), '%d %B, %Y')`"
 output: html_document
+
+knit: (function(input, ...) {
+    rmarkdown::render(
+      input,
+      output_file = "Reports/CompletionReport.html",
+      envir = globalenv()
+    )
+  })
+  
 params:
   prj_cd: LOA_IA17_GL1
+
   
 ---
 <!-- this document is intended to be run using "knit with parameters" -->
@@ -34,16 +44,34 @@ prj_url <- paste0(baseurl, tolower(params$prj_cd))
 response <- GET(prj_url)
 content <- content(response, "parsed")
 prj_abstract <- content$results[[1]]$abstract
- 
+
+n_nets <- nrow(fn121)
+n_sites <- length(unique(fn121$SITE))
+n_species <- length(unique(fn123$SPC))
+mn_effdur <- round(mean(fn121$EFFDUR), 1)
+min_effdur <- round(min(fn121$EFFDUR),1)
+max_effdur <- round(max(fn121$EFFDUR), 1)
 ```
 
-## `r fn011$prj_nm`
-### Project Lead: `r prj_ldr`
+## PROJECT COMPLETION REPORT
 
+- Project Name: `r fn011$PRJ_NM`
+- Project Code: `r params$prj_cd`
+- Project Lead: `r prj_ldr`
+- Start Date: `r fn011$PRJ_DATE0`
+- End Date: `r fn011$PRJ_DATE1`
+
+
+## Abstract
 `r prj_abstract`
 
+## Data Summary
+The project had `r n_nets` net lifts at `r n_sites` locations. The average effort duration was **`r mn_effdur` hours (range: `r min_effdur` - `r max_effdur` hours)**.
+
+There were `r n_species` species and `r sum(fn123$CATCNT)` fish caught over the duration of this project, `r sum(fn123$BIOCNT)` of which were bio sampled. The majority of species caught were **`r spc_sum$SPC_NM[1]` (n=`r spc_sum$N[1]`)**, followed by **`r spc_sum$SPC_NM[2]` (n=`r spc_sum$N[2]`)** and **`r spc_sum$SPC_NM[3]` (n=`r spc_sum$N[3]`)**
+
 ## Project Map
-```{r prjmap, message=FALSE}
+```{r prjmap, message=FALSE, fig.cap= paste("Figure 1. Location data for", fn011$PRJ_NM, sep = " ")}
 library(leaflet)
 fn121 <- fn121 |> mutate(maplabel = paste("SAM:", SAM, sep = " "))
 leaflet(fn121) |> addTiles() |> addCircles(lat = ~DD_LAT, lng = ~DD_LON, popup = ~maplabel)
@@ -60,7 +88,7 @@ catch_sum <- fn123  |>
   arrange(desc(CATCNT))
 
 catch_sum[1:10,] |> 
-  knitr::kable(caption = "Top 10 species captured",) |> 
+  knitr::kable(caption = "Table 1. Top 10 species captured.",) |> 
    kable_paper(bootstrap_options = "striped", full_width = F)
 
 ```
