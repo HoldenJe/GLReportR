@@ -4,8 +4,18 @@ output:
   flexdashboard::flex_dashboard:
     orientation: columns
     vertical_layout: fill
+
+knit: (function(input, ...) {
+    rmarkdown::render(
+      input,
+      output_file = "Reports/ProjectDashboard.html",
+      envir = globalenv()
+    )
+  })
+
 params:
   prj_cd: LHA_IA21_823
+  plotallspc: FALSE
   spc1: "334"
   spc2: "081"
   spc3: "091"
@@ -84,6 +94,7 @@ Fish Data
 
 ```{r}
 library(plotly)
+if(params$plotallspc) {fn125 <- filter(fn125, SPC %in% c(params$spc1, params$spc2, params$spc3))}
 fig <- plot_ly(data = fn125, x = ~FLEN, y = ~RWT, color = ~SPC)
 fig
 
