@@ -51,6 +51,11 @@ n_species <- length(unique(fn123$SPC))
 mn_effdur <- round(mean(fn121$EFFDUR), 1)
 min_effdur <- round(min(fn121$EFFDUR),1)
 max_effdur <- round(max(fn121$EFFDUR), 1)
+
+spc_sum <- fn123 |> group_by(SPC) |> 
+  summarize(N = sum(CATCNT)) 
+spc_sum <-  append.spc.names(spc_sum)
+spc_sum <- arrange(spc_sum, desc(N))
 ```
 
 ## PROJECT COMPLETION REPORT
