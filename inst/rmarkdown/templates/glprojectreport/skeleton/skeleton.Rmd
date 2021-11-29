@@ -3,26 +3,22 @@ title: "`r params$prj_cd`"
 date: "Compiled on: `r format(Sys.time(), '%d %B, %Y')`"
 output: html_document
 
-knit: (function(input, ...) {
-    rmarkdown::render(
-      input,
-      output_file = "Reports/CompletionReport.html",
-      envir = globalenv()
-    )
-  })
-  
 params:
-  prj_cd: LOA_IA17_GL1
+  prj_cd: LHA_IA21_701
 
   
 ---
 <!-- this document is intended to be run using "knit with parameters" -->
 <!-- the user can then provide a project code to generate a report -->
 <!-- alternatively the prj_cd parameter can be edited above -->
+<!-- save the report output to the Reports folder -->
+<!-- if using the API to fetch your data, connect to VPN and switch 'eval=FALSE' from the setup_API chunk to setup_Access -->
 <!-- for help with glfishr commands go to: https://github.com/AdamCottrill/glfishr -->
+<!-- under 'Tools -> Global Options -> RMarkdown' ensure that the dropdown 'Evaluate chunks in directory' is set to 'Projects' -->
 <!-- this text above this line will not be rendered in the final document -->
 
-```{r setup, include=FALSE}
+
+```{r setup_API, include=FALSE, eval=FALSE}
 knitr::opts_chunk$set(echo = FALSE, message = FALSE)
 library(gfsR) # due to plyr namespace conflicts gfsR needs to be loaded before dplyr
 library(glfishr)
@@ -44,6 +40,48 @@ prj_url <- paste0(baseurl, tolower(params$prj_cd))
 response <- GET(prj_url)
 content <- content(response, "parsed")
 prj_abstract <- content$results[[1]]$abstract
+
+n_nets <- nrow(fn121)
+n_sites <- length(unique(fn121$SITE))
+n_species <- length(unique(fn123$SPC))
+mn_effdur <- round(mean(fn121$EFFDUR), 1)
+min_effdur <- round(min(fn121$EFFDUR),1)
+max_effdur <- round(max(fn121$EFFDUR), 1)
+
+spc_sum <- fn123 |> group_by(SPC) |> 
+  summarize(N = sum(CATCNT)) 
+spc_sum <-  append.spc.names(spc_sum)
+spc_sum <- arrange(spc_sum, desc(N))
+```
+
+```{r setup_Access, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, message = FALSE)
+library(gfsR) # due to plyr namespace conflicts gfsR needs to be loaded before dplyr
+library(httr)
+library(jsonlite)
+library(dplyr)
+library(RODBC)
+
+src_db <- "./Data/Processed/IA21_700_FNprocessed_16Sep21.accdb"
+
+fetch_data <- function(table, prj_cd, src_db){
+  DBConnection <- odbcConnectAccess2007(src_db, uid = "", pwd = "")
+  dat <- sqlFetch(DBConnection, table, as.is=TRUE, stringsAsFactors=FALSE)
+  odbcClose(DBConnection)
+  return(dat)
+}
+
+fn011 <- fetch_data("011", params$prj_cd, src_db)
+fn121 <- fetch_data("121", params$prj_cd, src_db)
+fn123 <- fetch_data("123", params$prj_cd, src_db)
+fn123 <- append.spc.names(fn123)
+fn125 <- fetch_data("125", params$prj_cd, src_db)
+
+prj_ldr <- paste(fn011$PRJ_LDR.FIRST_NAME, 
+                 fn011$PRJ_LDR.LAST_NAME, sep =" ")
+
+
+prj_abstract <- "abstract text"
 
 n_nets <- nrow(fn121)
 n_sites <- length(unique(fn121$SITE))
