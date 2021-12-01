@@ -1,0 +1,4 @@
+name: DataExplorationDashboard
+description: >
+   A dashboard that connects to Access and provides tools for data exploration.
+create_dir: FALSE
