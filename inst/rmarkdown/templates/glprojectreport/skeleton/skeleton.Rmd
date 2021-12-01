@@ -6,19 +6,18 @@ output: html_document
 params:
   prj_cd: LHA_IA21_701
 
-  
 ---
-<!-- this document is intended to be run using "knit with parameters" -->
-<!-- the user can then provide a project code to generate a report -->
-<!-- alternatively the prj_cd parameter can be edited above -->
-<!-- save the report output to the Reports folder -->
-<!-- if using the API to fetch your data, connect to VPN and switch 'eval=FALSE' from the setup_API chunk to setup_Access -->
+<!-- save this file in the Reports folder -->
+<!-- edit the prj_cd parameter above to connect to a different project, or -->
+<!-- use the 'Knit with parameters' option in RStudio -->
 <!-- for help with glfishr commands go to: https://github.com/AdamCottrill/glfishr -->
-<!-- under 'Tools -> Global Options -> RMarkdown' ensure that the dropdown 'Evaluate chunks in directory' is set to 'Projects' -->
+<!-- To ensure the relative paths are consistent with the project directory -->
+<!-- 'Tools -> Global Options -> RMarkdown' -->  
+<!-- ensure that 'Evaluate chunks in directory' is set to 'Projects' -->
 <!-- this text above this line will not be rendered in the final document -->
 
 
-```{r setup_API, include=FALSE, eval=FALSE}
+```{r setup_API, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE, message = FALSE)
 library(gfsR) # due to plyr namespace conflicts gfsR needs to be loaded before dplyr
 library(glfishr)
@@ -40,13 +39,20 @@ prj_url <- paste0(baseurl, tolower(params$prj_cd))
 response <- GET(prj_url)
 content <- content(response, "parsed")
 prj_abstract <- content$results[[1]]$abstract
+```
 
+
+```{r TextValues, include=FALSE}
 n_nets <- nrow(fn121)
 n_sites <- length(unique(fn121$SITE))
 n_species <- length(unique(fn123$SPC))
 mn_effdur <- round(mean(fn121$EFFDUR), 1)
 min_effdur <- round(min(fn121$EFFDUR),1)
 max_effdur <- round(max(fn121$EFFDUR), 1)
+min_SIDEP <- round(min(fn121$SIDEP), 1)
+max_SIDEP <- round(max(fn121$SIDEP), 1)
+min_SITEM <- round(min(fn121$SITEM), 1)
+max_SITEM <- round(max(fn121$SITEM), 1)
 
 spc_sum <- fn123 |> group_by(SPC) |> 
   summarize(N = sum(CATCNT)) 
@@ -54,47 +60,6 @@ spc_sum <-  append.spc.names(spc_sum)
 spc_sum <- arrange(spc_sum, desc(N))
 ```
 
-```{r setup_Access, include=FALSE}
-knitr::opts_chunk$set(echo = FALSE, message = FALSE)
-library(gfsR) # due to plyr namespace conflicts gfsR needs to be loaded before dplyr
-library(httr)
-library(jsonlite)
-library(dplyr)
-library(RODBC)
-
-src_db <- "./Data/Processed/IA21_700_FNprocessed_16Sep21.accdb"
-
-fetch_data <- function(table, prj_cd, src_db){
-  DBConnection <- odbcConnectAccess2007(src_db, uid = "", pwd = "")
-  dat <- sqlFetch(DBConnection, table, as.is=TRUE, stringsAsFactors=FALSE)
-  odbcClose(DBConnection)
-  return(dat)
-}
-
-fn011 <- fetch_data("011", params$prj_cd, src_db)
-fn121 <- fetch_data("121", params$prj_cd, src_db)
-fn123 <- fetch_data("123", params$prj_cd, src_db)
-fn123 <- append.spc.names(fn123)
-fn125 <- fetch_data("125", params$prj_cd, src_db)
-
-prj_ldr <- paste(fn011$PRJ_LDR.FIRST_NAME, 
-                 fn011$PRJ_LDR.LAST_NAME, sep =" ")
-
-
-prj_abstract <- "abstract text"
-
-n_nets <- nrow(fn121)
-n_sites <- length(unique(fn121$SITE))
-n_species <- length(unique(fn123$SPC))
-mn_effdur <- round(mean(fn121$EFFDUR), 1)
-min_effdur <- round(min(fn121$EFFDUR),1)
-max_effdur <- round(max(fn121$EFFDUR), 1)
-
-spc_sum <- fn123 |> group_by(SPC) |> 
-  summarize(N = sum(CATCNT)) 
-spc_sum <-  append.spc.names(spc_sum)
-spc_sum <- arrange(spc_sum, desc(N))
-```
 
 ## PROJECT COMPLETION REPORT
 
@@ -109,7 +74,7 @@ spc_sum <- arrange(spc_sum, desc(N))
 `r prj_abstract`
 
 ## Data Summary
-The project had `r n_nets` net lifts at `r n_sites` locations. The average effort duration was **`r mn_effdur` hours (range: `r min_effdur` - `r max_effdur` hours)**.
+The project had **`r n_nets` net tows** at `r n_sites` `r ifelse(n_sites == 1, "location", "locations")`. The average effort duration was `r mn_effdur` hours (range: `r min_effdur` - `r max_effdur` hours). Tows were conducted at site depths ranging from `r min_SIDEP` m to `r max_SIDEP` m and surface temperatures ranging from `r min_SITEM`$^\circ$C to `r max_SITEM`$^\circ$C.
 
 There were `r n_species` species and `r sum(fn123$CATCNT)` fish caught over the duration of this project, `r sum(fn123$BIOCNT)` of which were bio sampled. The majority of species caught were **`r spc_sum$SPC_NM[1]` (n=`r spc_sum$N[1]`)**, followed by **`r spc_sum$SPC_NM[2]` (n=`r spc_sum$N[2]`)** and **`r spc_sum$SPC_NM[3]` (n=`r spc_sum$N[3]`)**
 
