@@ -1,18 +1,57 @@
 ---
-title: "Template Title"
-author: "Your Name"
-date: "The Date"
-output: output_format
+title: "`r params$prj_cd` Data Dashboard"
+output: 
+  flexdashboard::flex_dashboard:
+    orientation: columns
+    vertical_layout: fill
+
+params:
+  src_db: "Data/Processed/IA21_700_FNprocessed_16Sep21.accdb"
+  plotallspc: FALSE
+  spc1: "334"
+  spc2: "081"
+  spc3: "091"
+  
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+```{r setup_Access, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, message = FALSE)
+library(gfsR) # due to plyr namespace conflicts gfsR needs to be loaded before dplyr
+library(httr)
+library(jsonlite)
+library(dplyr)
+library(RODBC)
+
+fetch_data <- function(table, src_db){
+  DBConnection <- odbcConnectAccess2007(src_db, uid = "", pwd = "")
+  dat <- sqlFetch(DBConnection, table, as.is=TRUE, stringsAsFactors=FALSE)
+  odbcClose(DBConnection)
+  return(dat)
+}
+
+fn011 <- fetch_data("011", params$src_db)
+fn121 <- fetch_data("121", params$src_db)
+fn123 <- fetch_data("123", params$src_db)
+fn123 <- append.spc.names(fn123)
+fn125 <- fetch_data("125", params$prj_cd, src_db)
+
+prj_ldr <- paste(fn011$PRJ_LDR.FIRST_NAME, 
+                 fn011$PRJ_LDR.LAST_NAME, sep =" ")
+
+spc_sum <- fn123 |> group_by(SPC) |> 
+  summarize(N = sum(CATCNT)) 
+spc_sum <-  append.spc.names(spc_sum)
+spc_sum <- arrange(spc_sum, desc(N))
 ```
 
-## Adding an RMarkdown Template
+Fish Data
+=====================
 
-This file is what a user will see when they select your template. Make sure that you update the fields in the yaml header. In particular you will want to update the `output` field to whatever format your template requires.
+```{r}
+library(plotly)
+if(params$plotallspc) {fn125 <- filter(fn125, SPC %in% c(params$spc1, params$spc2, params$spc3))}
+fig <- plot_ly(data = fn125, x = ~FLEN, y = ~RWT, color = ~SPC)
+fig
 
-This is a good place to demonstrate special features that your template provides. Ideally it should knit out-of-the-box, or at least contain clear instructions as to what needs changing.
+```
 
-Finally, be sure to remove this message!
