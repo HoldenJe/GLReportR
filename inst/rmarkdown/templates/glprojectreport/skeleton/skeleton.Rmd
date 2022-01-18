@@ -4,7 +4,7 @@ date: "Compiled on: `r format(Sys.time(), '%d %B, %Y')`"
 output: html_document
 
 params:
-  prj_cd: LHA_IA21_701
+  prj_cd: LOA_IA17_GL1
 
 ---
 <!-- save this file in the Reports folder -->
@@ -34,11 +34,8 @@ fn125 <- get_FN125(list(prj_cd = params$prj_cd))
 prj_ldr <- paste(fn011$PRJ_LDR.FIRST_NAME, 
                  fn011$PRJ_LDR.LAST_NAME, sep =" ")
 
-baseurl <- "http://10.167.37.157/project_tracker/api/project_abstracts/?format=json&prj_cd="
-prj_url <- paste0(baseurl, tolower(params$prj_cd))
-response <- GET(prj_url)
-content <- content(response, "parsed")
-prj_abstract <- content$results[[1]]$abstract
+prj_abstract <- get_pt_abstract(list(prj_cd = params$prj_cd))
+
 ```
 
 

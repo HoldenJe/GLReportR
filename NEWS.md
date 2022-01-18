@@ -1,4 +1,5 @@
-# GLReportR (development version)
+# GLReportR 0.3.1
+Minor edits to the completion report template to use `glfishr::get_pt_abstract` code that previously wasn't available.
 
 # GLReportR 0.3.0
 A new dashboard template has been added!
