@@ -31,10 +31,10 @@ fn123 <- get_FN123(list(prj_cd = params$prj_cd))
 fn123 <- append.spc.names(fn123)
 fn125 <- get_FN125(list(prj_cd = params$prj_cd))
 
-prj_ldr <- paste(fn011$PRJ_LDR.FIRST_NAME, 
-                 fn011$PRJ_LDR.LAST_NAME, sep =" ")
-
-prj_abstract <- get_pt_abstract(list(prj_cd = params$prj_cd))
+prj<- get_pt_projects(list(prj_cd = params$prj_cd))
+prj_ldr <- paste(prj$PRJ_LDR.FIRST_NAME, 
+                 prj$PRJ_LDR.LAST_NAME, sep =" ")
+prj_abstract <- prj$ABSTRACT
 
 ```
 

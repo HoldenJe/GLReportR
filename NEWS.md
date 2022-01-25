@@ -1,5 +1,5 @@
 # GLReportR 0.3.1
-Minor edits to the completion report template to use `glfishr::get_pt_abstract` code that previously wasn't available.
+Minor edits to the completion report template to use `glfishr::get_pt_project` to retrieve the project abstract.
 
 # GLReportR 0.3.0
 A new dashboard template has been added!
