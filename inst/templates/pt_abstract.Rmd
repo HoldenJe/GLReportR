@@ -1,0 +1,25 @@
+---
+output: html_document
+date: "`r Sys.Date()`"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+library(here)
+load(file.path(here("params.RData")))
+```
+
+# `r myinputs$PRJ_CD`
+
+## Project Metadata
+Project Lead: `r myinputs$PI`  
+Lake Unit: `r myinputs$GLMU`  
+Gear Code: `r myinputs$GR`  
+Project Start: `r myinputs$PRJ_DATE0`  
+Project End: `r myinputs$PRJ_DATE1`  
+
+<hr>
+
+## Abstract
+
+Curabitur ut mauris imperdiet, euismod ante ut, ultricies quam. Aenean aliquam turpis eu sem aliquet porttitor et eget magna. Pellentesque porta sapien non nibh pulvinar imperdiet. Suspendisse ornare efficitur quam non ornare. Sed pretium laoreet nibh quis bibendum. Etiam tempor orci tortor, vitae ornare massa tincidunt quis. Proin sit amet egestas mauris. Vivamus nec blandit arcu, et aliquet lacus. Vestibulum scelerisque nisl vel eros ullamcorper varius. Vestibulum vel metus a diam volutpat interdum. Curabitur lobortis magna quis porttitor laoreet. Suspendisse potenti. Phasellus facilisis turpis at sem eleifend, vitae efficitur magna eleifend.

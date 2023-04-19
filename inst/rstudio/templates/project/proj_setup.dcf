@@ -11,7 +11,7 @@ Position: Left
 Parameter: PRJ_CD
 Widget: TextInput
 Label: Project Code
-Default:
+Default: LOA_IA99_ABC
 Position: Left
 
 Parameter: GLMU
@@ -23,5 +23,16 @@ Parameter: GEAR
 Widget: SelectInput
 Label: Gear
 Fields: GN, TW, TN, EF, Other
+Position: Right
 
+Parameter: PRJ_DATE0
+Widget: TextInput
+Label: Project Start Date
+Default: 25/12/2099
+Position: Right
 
+Parameter: PRJ_DATE1
+Widget: TextInput
+Label: Project End Date
+Default: 31/12/2099
+Position: Right
