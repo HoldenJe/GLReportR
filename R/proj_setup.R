@@ -33,6 +33,10 @@ proj_setup <- function(path, ...) {
   instructions <- c(
     "# GL Managment Unit Project Template Intructions",
     "<!-- This file is best viewed using the RStudio previewer -->",
+    "## Create Standard Templates",
+    "Run `GLReportR::create_project_markdown_files()` to finish setup",
+    "  ",
+    "  ",
     "## Folder Description and Contents",
     FolderDescrip,
     "  ",
@@ -57,6 +61,14 @@ proj_setup <- function(path, ...) {
     paste0(key, ": ", val, "<br />")
   })
 
+    myinputs <- lapply(seq_along(dots), function(i) {
+      key <- names(dots)[[i]]
+      val <- dots[[i]]
+      val
+    })
+
+    names(myinputs) <- c("PI", "PRJ_CD", "GLMU", "GR", "PRJ_DATE0", "PRJ_DATE1")
+
   # collect into single text string
   contents <- paste(
     paste(header, collapse = "\n"),
@@ -73,4 +85,5 @@ proj_setup <- function(path, ...) {
   # write to index file
   readme <- c(contents, " ", abstract, " ", "# Folder Description", " ", FolderDescrip)
   writeLines(readme, con = file.path(path, "ReadMe.md"))
+  save(myinputs, file = file.path(path, "params.RData"))
 }
